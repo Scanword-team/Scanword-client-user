@@ -1,11 +1,4 @@
-export interface Question {
-    id: number;
+export interface Question {    
     answer: string;
     question: string;
-    type: string;
-    x: number;
-    y: number;
-    direction: boolean;
-    image: string;
-    audio: string;
 }

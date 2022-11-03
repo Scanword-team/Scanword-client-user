@@ -1,4 +1,5 @@
-<div>
-    <p>Имя пользователя: {{user?.answer}}</p>
-    <p>Возраст пользователя: {{user?.question}}</p>
+<div *ngFor = "let scQuestion of scanwordQuestions">
+    <p>
+        {{scQuestion.question.question}}
+    </p>
 </div>

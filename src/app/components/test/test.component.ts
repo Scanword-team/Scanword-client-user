@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/user';
 import { HttpService } from 'src/app/services/http/http.service'; 
+import { ScanwordQuestion } from 'src/app/models/scanword_question';
 
 
 @Component({
@@ -10,12 +11,11 @@ import { HttpService } from 'src/app/services/http/http.service';
 })
 export class TestComponent implements OnInit {
 
-  user: User | undefined;
+  scanwordQuestions: ScanwordQuestion[] = [];
   constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
-    this.httpService.getData().subscribe({next:(data:any) => this.user=new User(data.answer, data.question)});
-    console.log(this.user)
+    this.httpService.getData().subscribe({next:(data:any) => this.scanwordQuestions=data});
   }
 
 }

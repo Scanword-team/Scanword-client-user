@@ -1,0 +1,32 @@
+.board {
+    border: solid 1px rgb(0, 25, 126);
+    display: inline-block;
+    background-color: rgb(77, 107, 228);
+}
+
+.line {  
+    display: flex;
+}
+
+.cell {
+    min-width: 100px;
+    min-height: 100px;
+    border: solid 1px rgb(0, 25, 126);
+}
+
+.cell .in {
+    width: 100px;
+    height: 100px;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 40px;
+}
+
+.empty {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(77, 107, 228);
+}

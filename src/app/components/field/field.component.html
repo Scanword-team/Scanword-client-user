@@ -1,4 +1,4 @@
-<div class="board">
+<div class="board" *ngIf="text">
     <div class="line" *ngFor="let line of text; index as i">
         <div *ngFor="let symbol of text0; index as j" class ="cell">
             <input type="text" maxlength="1" [(ngModel)]="text[i][j]" class = "in" *ngIf="!text[i][j].startsWith('+'); else elseBlock">

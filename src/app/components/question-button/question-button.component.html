@@ -1,17 +1,9 @@
 <div *ngIf="question; else elseBlock">
     <button (click)="overlay = true">
-        {{question.id}}
+        {{number}}
     </button>
     <div class="overlay" *ngIf="overlay" (click) = "overlay = false">
-        <div class="popup">
-            <img src="{{question.image}}" *ngIf="isImage()">
-
-            <div *ngIf="isAudio()"> 
-                <audio  controls src = "{{question.audio}}" > 
-                    Your browser does not support the
-                    <code>audio</code> element.                  
-                </audio>
-            </div>
+        <div class="popup">            
             <p>{{question.question}}</p>
         </div>
     </div>
@@ -19,4 +11,3 @@
 <ng-template #elseBlock>
     <button></button>
 </ng-template>
-

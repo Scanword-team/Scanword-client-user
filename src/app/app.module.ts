@@ -7,14 +7,12 @@ import { HttpClientModule }   from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { FieldComponent } from './components/field/field.component';
 import { QuestionButtonComponent } from './components/question-button/question-button.component';
-import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FieldComponent,
     QuestionButtonComponent,
-    TestComponent,
   ],
   imports: [
     BrowserModule,

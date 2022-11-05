@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Question } from '../../models/question2';
-import { QuestionService } from 'src/app/services/question/question.service';
+import { Question } from '../../models/question';
 
 @Component({
   selector: 'app-question-button',
@@ -10,30 +9,8 @@ import { QuestionService } from 'src/app/services/question/question.service';
 export class QuestionButtonComponent implements OnInit {
 
   overlay = false;
-  @Input() id?: number;
+  @Input() number?: number;
   @Input() question?: Question;
-  constructor(private questionService: QuestionService) { }
-
-  ngOnInit(): void {
-    this.getQuestion();
+  ngOnInit(): void {    
   }
-
-  isAudio(): boolean {
-    if (this.question) {
-      return this.question.type == "audio";
-    }
-    return false;
-  }
-  isImage(): boolean {
-    if (this.question) {   
-      return this.question.type == "image";
-    }
-    return false;
-  }
-
-  getQuestion(): void {
-    const testId = Number(this.id)
-    this.questionService.getQuestionById(testId).subscribe(question => this.question = question);
-  }
-
 }

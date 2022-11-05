@@ -5,6 +5,7 @@ export interface ScanwordQuestion {
     scanword : Scanword;
     question: Question;
     direction: boolean;
+    number: number;
     x: number;
     y: number;
 }

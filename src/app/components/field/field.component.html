@@ -1,5 +1,23 @@
 <div class="board" *ngIf="text">
     <div class="line" *ngFor="let line of text; index as i">
+        <div *ngFor="let symbol of text0; index as j" class ="cell">            
+            <input type="text" maxlength="1" [(ngModel)]="text[i][j].text" class = "inCurrent" *ngIf="isCurrentInput(text[i][j]); else elseBlock">
+            <ng-template #elseBlock>
+                <input type="text" maxlength="1" [(ngModel)]="text[i][j].text" class = "in" *ngIf="isInput(text[i][j]); else elseBlock">
+                <ng-template #elseBlock>
+                    <app-question-button  [number] = getNumber(text[i][j]) [question]=getQuestion(getNumber(text[i][j])) *ngIf="isButton(text[i][j]); else elseBlock" (click) ="currentCell = getNumber(text[i][j])"></app-question-button>
+                    <ng-template #elseBlock>
+                        <div class="empty"></div>
+                    </ng-template>
+                </ng-template>
+            </ng-template>                                
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="board" *ngIf="text">
+    <div class="line" *ngFor="let line of text; index as i">
         <div *ngFor="let symbol of text0; index as j" class ="cell">
             <input type="text" maxlength="1" [(ngModel)]="text[i][j]" class = "in" *ngIf="!text[i][j].startsWith('+'); else elseBlock">
             <ng-template #elseBlock>
@@ -10,13 +28,14 @@
             </ng-template>                    
         </div>
     </div>
-</div>
+</div> -->
 
 
-<div *ngIf="text">
+
+<!-- <div *ngIf="text">
     <div *ngFor = "let line of text" style="display: flex;">
         <div *ngFor = "let item of line">
             {{item}}
         </div>
     </div>
-</div>
+</div> -->

@@ -1,0 +1,5 @@
+<div *ngIf="scanwords" class="menu">
+    <div *ngFor="let scanword of scanwords" class="item">
+        <a routerLink="/scanword/{{scanword.id}}">{{scanword.name}} ({{scanword.width}} x {{scanword.height}})</a>
+    </div>    
+</div>

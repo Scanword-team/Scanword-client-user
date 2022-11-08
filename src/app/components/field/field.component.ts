@@ -15,8 +15,8 @@ export class FieldComponent implements OnInit {
   
     currentCell = 0;
     scanwordQuestions: ScanwordQuestion[] = [];  
-    @Input() text?:Array<Array<Cell>>;
-    @Input() text0?:Array<Cell>;
+    blockedQuestions: Question[] = [];    
+    text:Array<Array<Cell>> = Array();
     
     constructor(
         private route: ActivatedRoute,
@@ -47,112 +47,116 @@ export class FieldComponent implements OnInit {
         return cell.type == "button"
     }
 
-    ngOnInit(): void {
+    isDisabled(cell:Cell) {
+        return !(cell.text == "")
+    }
+
+    getData(): void {
         const id = Number(this.route.snapshot.paramMap.get('id'))
         this.scanwordQuestionHttpService.getAllByScanwordId(id).subscribe(res => {
             this.scanwordQuestions = res;
             this.solvableScanwordHttpService.getAllResolvedByScanwordId(id).subscribe(res => {
+                this.blockedQuestions = res
                 let n = this.scanwordQuestions[0].scanword.width;
                 let m = this.scanwordQuestions[0].scanword.height;
                 let mas = []
                 for (var i = 0; i < n; i++) {
                     let mas2 = []       
                     for (var j = 0; j < m; j++) {  
-                        mas2.push(new Cell("empty","", [])) 
+                        mas2.push(new Cell("empty","", [], false)) 
                     }
                     mas.push(mas2)
                 }
-                //console.log(mas)
                 for (let question of this.scanwordQuestions) {
                     let x = question.x
                     let y = question.y
                     if (this.isShow(res, question)) {
                         if (question.direction) {
-                            mas[y][x++] = new Cell("button",question.number.toString(), [])
+                            mas[y][x++] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
-                                if (mas[y][x].type == "input") {
-                                    mas[y][x++].questionNumber.push(question.number)
+                                if (mas[y][x].type == "input") {  
+                                    if (mas[y][x].text == "") {
+                                        mas[y][x].text = symbol
+                                        mas[y][x].isDisable = true 
+                                    }                                  
+                                    mas[y][x].questionNumber.push(question.number)   
                                 } else {
-                                  mas[y][x++] = new Cell("input",symbol, [question.number])
+                                  mas[y][x] = new Cell("input",symbol, [question.number], true)
                                 }
+                                x++
                             }
                         } else {
-                            mas[y++][x] = new Cell("button",question.number.toString(), [])
+                            mas[y++][x] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
                                 if (mas[y][x].type == "input") {
-                                    mas[y++][x].questionNumber.push(question.number)
+                                    if (mas[y][x].text == "") {
+                                        mas[y][x].text = symbol
+                                        mas[y][x].isDisable = true 
+                                    }
+                                    mas[y][x].questionNumber.push(question.number) 
                                 } else {
-                                  mas[y++][x] = new Cell("input",symbol, [question.number])
+                                  mas[y][x] = new Cell("input",symbol, [question.number], true)
                                 }
+                                y++
                             }
                         }
                         
                     } else {
                         if (question.direction) {
-                            mas[y][x++] = new Cell("button",question.number.toString(), [])
+                            mas[y][x++] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
                                 if (mas[y][x].type == "input") {
-                                    mas[y][x++].questionNumber.push(question.number)
+                                    mas[y][x].questionNumber.push(question.number)
                                 } else {
-                                  mas[y][x++] = new Cell("input", "", [question.number])
+                                  mas[y][x] = new Cell("input", "", [question.number], false)
                                 }
+                                x++
                             }
                         } else {
-                            mas[y++][x] = new Cell("button",question.number.toString(), [])
+                            mas[y++][x] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
                                 if (mas[y][x].type == "input") {
-                                    mas[y++][x].questionNumber.push(question.number)
+                                    mas[y][x].questionNumber.push(question.number)
                                 } else {
-                                  mas[y++][x] = new Cell("input", "", [question.number])
+                                  mas[y][x] = new Cell("input", "", [question.number], false)
                                 }
+                                y++
                             }
                         }
                     }
                 }
-                //console.log(mas)
                 this.text = mas
-                this.text0 = mas[0]
+            }) 
+        })       
+    }  
 
+    ngOnInit(): void {
+        this.getData()
+    }
 
-
-        // for (let question of this.scanwordQuestions) {
-        //   let x = question.x;
-        //   let y = question.y;
-        //   if (this.isShow(res, question)) {
-        //     if (question.direction) {
-        //       mas[y][x++] += question.number;
-        //       for (let symbol of question.question.answer) {
-        //         mas[y][x++] = symbol;            
-        //       }
-        //     } else {
-        //       mas[y++][x] += question.number;
-        //       for (let symbol of question.question.answer) {
-        //         mas[y++][x] = symbol;            
-        //       }
-        //     }
-        //   } else {
-        //     if (question.direction) {
-        //       mas[y][x++] += question.number;
-        //       for (let symbol of question.question.answer) {
-        //         if (mas[y][x] == "+") {
-        //           mas[y][x] = "";   
-        //         }
-        //         x++;       
-        //       }
-        //     } else {
-        //       mas[y++][x] += question.number;
-        //       for (let symbol of question.question.answer) {
-        //         if (mas[y][x] == "+") {
-        //           mas[y][x] = ""; 
-        //         }
-        //         y++                         
-        //       }
-        //     }
-        //   }        
-        //   this.text = mas
-        //   this.text0 =mas[0]
-        // }
-      }) 
-    })       
-  }  
+    onCheck(): void {
+        const id = Number(this.route.snapshot.paramMap.get('id'))
+        for (let question of this.scanwordQuestions) {
+            if (!this.isShow(this.blockedQuestions, question)) {
+                let res = true
+                let x = question.x
+                let y = question.y
+                if (question.direction) {
+                    x++
+                    for (let symbol of question.question.answer) {
+                        res = res && (symbol == this.text[y][x++].text)
+                    }
+                } else {
+                    y++
+                    for (let symbol of question.question.answer) {
+                        res = res && (symbol == this.text[y++][x].text)
+                    } 
+                }
+                if (res) {      
+                    this.solvableScanwordHttpService.saveQuestion(id, question.question).subscribe()
+                }
+            }            
+        } 
+        this.getData()
+    }
 }

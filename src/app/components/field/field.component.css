@@ -1,7 +1,7 @@
 .board {
     border: solid 1px rgb(0, 25, 126);
     display: inline-block;
-    background-color: rgb(77, 107, 228);
+    /* background-color: rgb(77, 107, 228); */
 }
 
 .line {  
@@ -42,4 +42,13 @@
     width: 100px;
     height: 100px;
     background-color: rgb(77, 107, 228);
+}
+
+.check-button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgb(0, 25, 126);
+    color: #ffffff;
+    font-size: 20px;
+    border-radius: 5px;
 }

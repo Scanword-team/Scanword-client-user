@@ -8,9 +8,21 @@ import { Question } from '../../models/question';
 })
 export class QuestionButtonComponent implements OnInit {
 
-  overlay = false;
-  @Input() number?: number;
-  @Input() question?: Question;
-  ngOnInit(): void {    
-  }
+    overlay = false;
+    @Input() number?: number;
+    @Input() question?: Question;
+    ngOnInit(): void {    
+    }
+
+    isText(question: Question) {
+        return question.type == "text"
+    }
+
+    isAudio(question: Question) {
+        return question.type == "audio"
+    }
+
+    isImage(question: Question) {
+        return question.type == "image"
+    }
 }

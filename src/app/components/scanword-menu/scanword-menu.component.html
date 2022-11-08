@@ -1,5 +1,6 @@
-<div *ngIf="scanwords" class="menu">
-    <div *ngFor="let scanword of scanwords" class="item">
-        <a routerLink="/scanword/{{scanword.id}}">{{scanword.name}} ({{scanword.width}} x {{scanword.height}})</a>
+<div *ngIf="scanwords && stats!=[]" class="menu">
+    <div *ngFor="let scanword of scanwords; index as i" class="item" routerLink="/scanword/{{scanword.id}}">  
+        <a>{{scanword.name}} ({{scanword.width}} x {{scanword.height}})</a>
+        <a class="stats">Решено {{stats[i]}} вопросов</a>
     </div>    
 </div>

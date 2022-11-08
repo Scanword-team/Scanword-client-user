@@ -56,7 +56,8 @@ export class FieldComponent implements OnInit {
         this.scanwordQuestionHttpService.getAllByScanwordId(id).subscribe(res => {
             this.scanwordQuestions = res;
             this.solvableScanwordHttpService.getAllResolvedByScanwordId(id).subscribe(res => {
-                this.blockedQuestions = res
+                this.blockedQuestions = res  
+                console.log(res)              
                 let n = this.scanwordQuestions[0].scanword.width;
                 let m = this.scanwordQuestions[0].scanword.height;
                 let mas = []
@@ -70,6 +71,7 @@ export class FieldComponent implements OnInit {
                 for (let question of this.scanwordQuestions) {
                     let x = question.x
                     let y = question.y
+                    console.log(question)
                     if (this.isShow(res, question)) {
                         if (question.direction) {
                             mas[y][x++] = new Cell("button",question.number.toString(), [], true)
@@ -77,6 +79,7 @@ export class FieldComponent implements OnInit {
                                 if (mas[y][x].type == "input") {  
                                     if (mas[y][x].text == "") {
                                         mas[y][x].text = symbol
+                                        console.log(symbol)
                                         mas[y][x].isDisable = true 
                                     }                                  
                                     mas[y][x].questionNumber.push(question.number)   
@@ -107,6 +110,7 @@ export class FieldComponent implements OnInit {
                             for (let symbol of question.question.answer) {
                                 if (mas[y][x].type == "input") {
                                     mas[y][x].questionNumber.push(question.number)
+                                    mas[y][x].text = ""
                                 } else {
                                   mas[y][x] = new Cell("input", "", [question.number], false)
                                 }
@@ -117,6 +121,7 @@ export class FieldComponent implements OnInit {
                             for (let symbol of question.question.answer) {
                                 if (mas[y][x].type == "input") {
                                     mas[y][x].questionNumber.push(question.number)
+                                    mas[y][x].text = ""
                                 } else {
                                   mas[y][x] = new Cell("input", "", [question.number], false)
                                 }
@@ -128,11 +133,7 @@ export class FieldComponent implements OnInit {
                 this.text = mas
             }) 
         })       
-    }  
-
-    ngOnInit(): void {
-        this.getData()
-    }
+    } 
 
     onCheck(): void {
         const id = Number(this.route.snapshot.paramMap.get('id'))
@@ -157,6 +158,10 @@ export class FieldComponent implements OnInit {
                 }
             }            
         } 
+        this.getData()
+    }
+
+    ngOnInit(): void {
         this.getData()
     }
 }

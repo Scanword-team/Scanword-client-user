@@ -8,6 +8,7 @@ import { FieldComponent } from './components/field/field.component';
 import { QuestionButtonComponent } from './components/question-button/question-button.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ScanwordMenuComponent } from './components/scanword-menu/scanword-menu.component';
+import { AuthPageComponent } from './components/auth-page/auth-page.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { ScanwordMenuComponent } from './components/scanword-menu/scanword-menu.
     FieldComponent,
     QuestionButtonComponent,
     ScanwordMenuComponent,
+    AuthPageComponent,
   ],
   imports: [
     BrowserModule,

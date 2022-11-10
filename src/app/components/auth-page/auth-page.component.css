@@ -1,0 +1,69 @@
+.login-block {
+    margin: 10% 30% 0 30%;
+    padding: 10px;
+    width: 40%;
+}
+
+.line {
+    display: inline-block;
+    width: 100%;
+}
+
+.up-button-active {
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    height: 75px;
+    background-color: rgb(77, 107, 228);
+    font-size: 20px;
+    color: #ffffff;
+    border: 2px solid rgb(0, 25, 126);
+    border-bottom: none;
+}
+
+.up-button {
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    height: 75px;
+    background-color: rgb(0, 25, 126);
+    font-size: 20px;
+    color: #ffffff;
+    border: 2px solid rgb(0, 25, 126);
+    border-bottom: none;
+}
+
+.input-block {
+    background-color: rgb(77, 107, 228);
+    border: 2px solid rgb(0, 25, 126);
+    border-top: none;
+    
+}
+
+.input-block p {
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+    padding: 10px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.input-block input {
+    margin: 10px 0 10px 10px;
+    padding: 0;
+    font-size: 20px;
+    width: 80%;
+    line-height:40px;
+}
+
+.ok-button {
+    margin: 10px;
+    left: 30%;
+    width:40%;
+    height: 30px;
+    background-color: rgb(0, 25, 126);
+    font-size: 16px;
+    color: #ffffff;
+}

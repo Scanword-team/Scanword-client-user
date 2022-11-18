@@ -1,48 +1,84 @@
-.board {
-    border: solid 1px rgb(0, 25, 126);
-    display: inline-block;
-    /* background-color: rgb(77, 107, 228); */
+.grid {
+    display: grid;
 }
 
-.line {  
-    display: flex;
+.cell  {
+    border: 1px solid black;
+} 
+
+.cell:empty {
+    background-color: rgb(77, 107, 228);;
 }
 
-.cell {
-    min-width: 100px;
-    min-height: 100px;
-    border: solid 1px rgb(0, 25, 126);
-}
-
-.cell .in {
-    width: 100px;
-    height: 100px;
+.cell input {
     border: none;
     padding: 0;
     margin: 0;
     text-align: center;
     vertical-align: middle;
-    font-size: 40px;
 }
 
-.cell .inCurrent {
-    width: 100px;
-    height: 100px;
-    border: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 40px;
+.cell .current {
     background-color: rgb(213, 236, 113);
 }
 
-
-.empty {
-    width: 100px;
-    height: 100px;
-    background-color: rgb(77, 107, 228);
+.cell .question-button {
+    background-color: rgb(141, 156, 219);
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
 }
+
+
+
+.overlay {
+    position: fixed;
+    top:0%;
+    left:0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 15, 15, 0.9);
+}
+
+.overlay .popup {
+    position:absolute;
+    display: flex;
+    align-items: center;
+    top: 10%;
+    left: 30%;
+    width: 40%;
+    min-height: 20%;
+    max-height: 60%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(220, 220, 220, 0.8);
+    border: 1px solid black;
+    font-size: 40px;
+}
+
+.overlay .popup p {
+    padding: 10px;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin: 0 auto;
+}
+
+.popup img {
+    width: 100%;
+}
+
+.popup audio {
+    margin: 5%;
+    width: 90%;
+}
+
+.popup .center-div {
+    margin: auto;
+    text-align: center;
+}
+
 
 .check-button {
     margin-top: 10px;

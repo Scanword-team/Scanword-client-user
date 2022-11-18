@@ -14,18 +14,22 @@ import { SolvableScanwordHttpService } from 'src/app/services/http/solvable-scan
 export class FieldComponent implements OnInit {
   
     currentCell = 0;
+    n = 0;
+    m = 0;
+    cellSize = 0
+    currentQuestion:Question | undefined;
     scanwordQuestions: ScanwordQuestion[] = [];  
     blockedQuestions: Question[] = [];    
-    text:Array<Array<Cell>> = Array();
+    text:Array<Cell> = Array();
     
     constructor(
         private route: ActivatedRoute,
         private scanwordQuestionHttpService: ScanwordQuestionHttpService,
         private solvableScanwordHttpService: SolvableScanwordHttpService,
     ) { }
-  
-    getNumber(cell: Cell) {
-        return parseInt(cell.text)
+
+    ngOnInit(): void {
+        this.getData()
     }
   
     getQuestion(number: number): Question {
@@ -51,54 +55,69 @@ export class FieldComponent implements OnInit {
         return !(cell.text == "")
     }
 
+    showQuestion(cell:Cell) {
+        let number = parseInt(cell.text); 
+        this.currentCell = number
+        this.currentQuestion = this.getQuestion(number)
+    }
+
+    isText(question: Question) {
+        return question.type == "text"
+    }
+
+    isAudio(question: Question) {
+        return question.type == "audio"
+    }
+
+    isImage(question: Question) {
+        return question.type == "image"
+    }
+
     getData(): void {
         const id = Number(this.route.snapshot.paramMap.get('id'))
         this.scanwordQuestionHttpService.getAllByScanwordId(id).subscribe(res => {
             this.scanwordQuestions = res;
             this.solvableScanwordHttpService.getAllResolvedByScanwordId(id).subscribe(res => {
                 this.blockedQuestions = res  
-                //console.log(res)              
-                let n = this.scanwordQuestions[0].scanword.width;
-                let m = this.scanwordQuestions[0].scanword.height;
+                this.n = this.scanwordQuestions[0].scanword.width;
+                this.m = this.scanwordQuestions[0].scanword.height;
+                let max = this.n > this.m ?  this.n: this.m;
+                this.cellSize = 700 / max // Общий размер тут пока 600
                 let mas = []
-                for (var i = 0; i < n; i++) {
-                    let mas2 = []       
-                    for (var j = 0; j < m; j++) {  
-                        mas2.push(new Cell("empty","", [], false)) 
+                for (var i = 0; i < this.n; i++) {     
+                    for (var j = 0; j < this.m; j++) {  
+                        mas.push(new Cell("empty","", [], false)) 
                     }
-                    mas.push(mas2)
-                }
+                }              
                 for (let question of this.scanwordQuestions) {
                     let x = question.x
                     let y = question.y
-                    //console.log(question)
                     if (this.isShow(res, question)) {
                         if (question.direction) {
-                            mas[y][x++] = new Cell("button",question.number.toString(), [], true)
+                            mas[y * this.m + x++] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
-                                if (mas[y][x].type == "input") {  
-                                    if (mas[y][x].text == "") {
-                                        mas[y][x].text = symbol
-                                        //console.log(symbol)
-                                        mas[y][x].isDisable = true 
+                                if (mas[y * this.m + x].type == "input") {  
+                                    if (mas[y * this.m + x].text == "") {
+                                        mas[y * this.m + x].text = symbol
+                                        mas[y * this.m + x].isDisable = true 
                                     }                                  
-                                    mas[y][x].questionNumber.push(question.number)   
+                                    mas[y * this.m + x].questionNumber.push(question.number)   
                                 } else {
-                                  mas[y][x] = new Cell("input",symbol, [question.number], true)
+                                  mas[y * this.m + x] = new Cell("input",symbol, [question.number], true)
                                 }
                                 x++
                             }
                         } else {
-                            mas[y++][x] = new Cell("button",question.number.toString(), [], true)
+                            mas[y++ * this.m + x] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
-                                if (mas[y][x].type == "input") {
-                                    if (mas[y][x].text == "") {
-                                        mas[y][x].text = symbol
-                                        mas[y][x].isDisable = true 
+                                if (mas[y * this.m + x].type == "input") {
+                                    if (mas[y * this.m + x].text == "") {
+                                        mas[y * this.m + x].text = symbol
+                                        mas[y * this.m + x].isDisable = true 
                                     }
-                                    mas[y][x].questionNumber.push(question.number) 
+                                    mas[y * this.m + x].questionNumber.push(question.number) 
                                 } else {
-                                  mas[y][x] = new Cell("input",symbol, [question.number], true)
+                                  mas[y * this.m + x] = new Cell("input",symbol, [question.number], true)
                                 }
                                 y++
                             }
@@ -106,22 +125,22 @@ export class FieldComponent implements OnInit {
                         
                     } else {
                         if (question.direction) {
-                            mas[y][x++] = new Cell("button",question.number.toString(), [], true)
+                            mas[y * this.m + x++] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
-                                if (mas[y][x].type == "input") {
-                                    mas[y][x].questionNumber.push(question.number)                                    
+                                if (mas[y * this.m + x].type == "input") {
+                                    mas[y * this.m + x].questionNumber.push(question.number)                                    
                                 } else {
-                                  mas[y][x] = new Cell("input", "", [question.number], false)
+                                  mas[y * this.m + x] = new Cell("input", "", [question.number], false)
                                 }
                                 x++
                             }
                         } else {
-                            mas[y++][x] = new Cell("button",question.number.toString(), [], true)
+                            mas[y++ * this.m + x] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
-                                if (mas[y][x].type == "input") {
-                                    mas[y][x].questionNumber.push(question.number)
+                                if (mas[y * this.m + x].type == "input") {
+                                    mas[y * this.m + x].questionNumber.push(question.number)
                                 } else {
-                                  mas[y][x] = new Cell("input", "", [question.number], false)
+                                  mas[y * this.m + x] = new Cell("input", "", [question.number], false)
                                 }
                                 y++
                             }
@@ -143,23 +162,19 @@ export class FieldComponent implements OnInit {
                 if (question.direction) {
                     x++
                     for (let symbol of question.question.answer) {
-                        res = res && (symbol.toLowerCase() == this.text[y][x++].text.toLowerCase())
+                        res = res && (symbol.toLowerCase() == this.text[y * this.m + x++].text.toLowerCase())
                     }
                 } else {
                     y++
                     for (let symbol of question.question.answer) {
-                        res = res && (symbol.toLowerCase() == this.text[y++][x].text.toLowerCase())
+                        res = res && (symbol.toLowerCase() == this.text[y++ * this.m + x].text.toLowerCase())
                     } 
                 }
                 if (res) {      
                     this.solvableScanwordHttpService.saveQuestion(id, question.question).subscribe()
                 }
             }            
-        } 
+        }
         this.getData()
-    }
-
-    ngOnInit(): void {
-        this.getData()
-    }
+    }    
 }

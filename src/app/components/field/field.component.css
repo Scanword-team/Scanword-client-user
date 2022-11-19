@@ -1,5 +1,6 @@
 .grid {
     display: grid;
+
 }
 
 .cell  {
@@ -30,8 +31,6 @@
     text-align: center;
     vertical-align: middle;
 }
-
-
 
 .overlay {
     position: fixed;
@@ -98,4 +97,36 @@
     font-size: 20px;
     font-weight: bold;
     color: rgb(0, 25, 126);
+}
+
+.horizontal-container {
+    display: flex;
+    margin-left: 200px;
+}
+
+
+.button-container {
+    margin-left: 100px;
+    width: 300px;
+    
+}
+.hint-button {
+    width: 300px;
+    height: 100px;
+    background-color: rgb(0, 25, 126);
+    color: #ffffff;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.button-container p {
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(0, 25, 126);
+}
+
+#hint {
+    margin-top: 250px;
 }

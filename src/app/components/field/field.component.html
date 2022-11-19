@@ -1,32 +1,42 @@
-<div class="grid" *ngIf="text" [ngStyle]="{
-    'grid-template-columns': 'repeat(' + this.m + ','+ this.cellSize +'px)',
-    'grid-auto-rows' : this.cellSize + 'px',
-    'width' : (this.cellSize*m) +'px',
-    'height' : (this.cellSize*n) +'px'
-    
-}">
-    <div class="cell" *ngFor="let symbol of text; index as i">
-        <input class = "current" type="text" maxlength="1" [(ngModel)]="text[i].text"  [disabled]= "text[i].isDisable"  *ngIf="isCurrentInput(text[i]); else elseBlock" [ngStyle]="{
-            'width': (this.cellSize - 2) + 'px',
-            'height': (this.cellSize - 2) + 'px',
-            'font-size':(this.cellSize - 25) + 'px'
-        }">
-            <ng-template #elseBlock>
-                <input type="text" maxlength="1" [(ngModel)]="text[i].text"  [disabled]= "text[i].isDisable" *ngIf="isInput(text[i]); else elseBlock" [ngStyle]="{
-                    'width': (this.cellSize - 2) + 'px',
-                    'height': (this.cellSize - 2) + 'px',
-                    'font-size':(this.cellSize - 25) + 'px'
-                }">
+<div class="horizontal-container" *ngIf="text">
+    <div class="grid" [ngStyle]="{
+        'grid-template-columns': 'repeat(' + this.m + ','+ this.cellSize +'px)',
+        'grid-auto-rows' : this.cellSize + 'px',
+        'width' : (this.cellSize*m) +'px',
+        'height' : (this.cellSize*n) +'px'
+        
+    }">
+        <div class="cell" *ngFor="let symbol of text; index as i">
+            <input class = "current" type="text" maxlength="1" [(ngModel)]="text[i].text"  [disabled]= "text[i].isDisable"  *ngIf="isCurrentInput(text[i]); else elseBlock" [ngStyle]="{
+                'width': (this.cellSize - 2) + 'px',
+                'height': (this.cellSize - 2) + 'px',
+                'font-size':(this.cellSize - 25) + 'px'
+            }">
                 <ng-template #elseBlock>
-                    <button class="question-button"*ngIf="isButton(text[i])" (click) = "showQuestion(text[i])" [ngStyle]="{
+                    <input type="text" maxlength="1" [(ngModel)]="text[i].text"  [disabled]= "text[i].isDisable" *ngIf="isInput(text[i]); else elseBlock" [ngStyle]="{
                         'width': (this.cellSize - 2) + 'px',
                         'height': (this.cellSize - 2) + 'px',
                         'font-size':(this.cellSize - 25) + 'px'
-                    }">{{text[i].text}}</button>                    
-                </ng-template>
-            </ng-template>            
+                    }">
+                    <ng-template #elseBlock>
+                        <button class="question-button"*ngIf="isButton(text[i])" (click) = "showQuestion(text[i])" [ngStyle]="{
+                            'width': (this.cellSize - 2) + 'px',
+                            'height': (this.cellSize - 2) + 'px',
+                            'font-size':(this.cellSize - 25) + 'px'
+                        }">{{text[i].text}}</button>                    
+                    </ng-template>
+                </ng-template>            
+        </div>
     </div>
+    <div class="button-container">
+        <button class="hint-button" id="hint">Взять подсказку  <br>Осталось :n</button>
+        <button class="hint-button"  (click)="onCheck()" >Проверить</button>
+        <button class="hint-button">Сохранить</button>
+        <p>На данный момент решено {{blockedQuestions.length}}/{{scanwordQuestions.length}} вопросов</p>   
+    </div>    
 </div>
+
+
 
 <div class="overlay" *ngIf="currentQuestion" (click) = "currentQuestion = undefined">
     <div class="popup">
@@ -48,10 +58,4 @@
             <p >{{currentQuestion.question}}</p>
         </div>
     </div>
-</div> 
-
-
-<div class="horizontal-block">
-    <button class="check-button" (click)="onCheck()">Проверить</button>
-    <p>На данный момент решено {{blockedQuestions.length}}/{{scanwordQuestions.length}} вопросов</p>    
-</div>
+</div>  

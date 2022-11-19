@@ -73,16 +73,21 @@ export class FieldComponent implements OnInit {
         return question.type == "image"
     }
 
+    CC() {
+        console.log(this.blockedQuestions)
+    }
+
     getData(): void {
         const id = Number(this.route.snapshot.paramMap.get('id'))
         this.scanwordQuestionHttpService.getAllByScanwordId(id).subscribe(res => {
             this.scanwordQuestions = res;
             this.solvableScanwordHttpService.getAllResolvedByScanwordId(id).subscribe(res => {
-                this.blockedQuestions = res  
+                this.blockedQuestions = res
+                //console.log(this.blockedQuestions)
                 this.n = this.scanwordQuestions[0].scanword.width;
                 this.m = this.scanwordQuestions[0].scanword.height;
                 let max = this.n > this.m ?  this.n: this.m;
-                this.cellSize = 700 / max // Общий размер тут пока 600
+                this.cellSize = 1000 / max // Общий размер тут пока 600
                 let mas = []
                 for (var i = 0; i < this.n; i++) {     
                     for (var j = 0; j < this.m; j++) {  

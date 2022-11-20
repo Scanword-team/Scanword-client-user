@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="button-container">
-        <button class="hint-button" id="hint">Взять подсказку  <br>Осталось :n</button>
+        <button class="hint-button" id="hint" (click)="getNewPrompt()">Взять подсказку  <br>Осталось : {{prompt}}</button>
         <button class="hint-button"  (click)="onCheck()" >Проверить</button>
         <button class="hint-button">Сохранить</button>
         <p>На данный момент решено {{blockedQuestions.length}}/{{scanwordQuestions.length}} вопросов</p>   

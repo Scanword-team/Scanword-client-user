@@ -5,6 +5,7 @@ import { Question } from 'src/app/models/question';
 import { ScanwordQuestion } from 'src/app/models/scanword_question';
 import { ScanwordQuestionHttpService } from 'src/app/services/http/scanword-question/scanword-question-http.service';
 import { SolvableScanwordHttpService } from 'src/app/services/http/solvable-scanword/solvable-scanword-http.service';
+import { ScanwordHttpService } from 'src/app/services/http/scanword/scanword-http.service';
 
 @Component({
   selector: 'app-field',
@@ -12,10 +13,12 @@ import { SolvableScanwordHttpService } from 'src/app/services/http/solvable-scan
   styleUrls: ['./field.component.css']
 })
 export class FieldComponent implements OnInit {
+    
   
     currentCell = 0;
     n = 0;
     m = 0;
+    prompt = 0
     cellSize = 0
     currentQuestion:Question | undefined;
     scanwordQuestions: ScanwordQuestion[] = [];  
@@ -26,6 +29,7 @@ export class FieldComponent implements OnInit {
         private route: ActivatedRoute,
         private scanwordQuestionHttpService: ScanwordQuestionHttpService,
         private solvableScanwordHttpService: SolvableScanwordHttpService,
+        private scanwordHttpService: ScanwordHttpService,
     ) { }
 
     ngOnInit(): void {
@@ -73,19 +77,23 @@ export class FieldComponent implements OnInit {
         return question.type == "image"
     }
 
-    CC() {
-        console.log(this.blockedQuestions)
+    getNewPrompt() {
+        this.prompt--
+        const id = Number(this.route.snapshot.paramMap.get('id'))
+        this.solvableScanwordHttpService.decrease(id).subscribe()
     }
 
-    getData(): void {
-        const id = Number(this.route.snapshot.paramMap.get('id'))
+    getData(): void {     
+        const id = Number(this.route.snapshot.paramMap.get('id'))   
         this.scanwordQuestionHttpService.getAllByScanwordId(id).subscribe(res => {
             this.scanwordQuestions = res;
-            this.solvableScanwordHttpService.getAllResolvedByScanwordId(id).subscribe(res => {
-                this.blockedQuestions = res
-                //console.log(this.blockedQuestions)
-                this.n = this.scanwordQuestions[0].scanword.width;
-                this.m = this.scanwordQuestions[0].scanword.height;
+
+            this.solvableScanwordHttpService.getByScanwordId(id).subscribe(res => {
+                this.blockedQuestions = res.solvedQuestions   
+                this.prompt = res.prompt          
+                let scan = this.scanwordQuestions[0].scanword
+                this.n = scan.width;
+                this.m = scan.height;
                 let max = this.n > this.m ?  this.n: this.m;
                 this.cellSize = 1000 / max // Общий размер тут пока 600
                 let mas = []
@@ -97,7 +105,7 @@ export class FieldComponent implements OnInit {
                 for (let question of this.scanwordQuestions) {
                     let x = question.x
                     let y = question.y
-                    if (this.isShow(res, question)) {
+                    if (this.isShow(this.blockedQuestions, question)) {
                         if (question.direction) {
                             mas[y * this.m + x++] = new Cell("button",question.number.toString(), [], true)
                             for (let symbol of question.question.answer) {
@@ -153,7 +161,11 @@ export class FieldComponent implements OnInit {
                     }
                 }
                 this.text = mas
-            }) 
+            })
+
+            // this.solvableScanwordHttpService.getAllResolvedByScanwordId(id).subscribe(res => {
+                
+            // }) 
         })       
     } 
 

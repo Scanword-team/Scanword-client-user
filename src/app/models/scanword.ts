@@ -3,4 +3,5 @@ export interface Scanword {
     name: string;
     width: number;
     height: number;
+    prompt: number;
 }

@@ -22,5 +22,5 @@ export class ScanwordHttpService {
 
     getStatsById(Id: number): Observable<Stats> {
         return this.http.get<Stats>(this.baseURL + "/getStats/" + Id, {headers :new HttpHeaders().append('Authorization', this.tokenService.getToken() || "")})
-    }
+    }   
 }

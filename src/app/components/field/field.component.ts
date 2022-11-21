@@ -15,7 +15,8 @@ import { ScanwordHttpService } from 'src/app/services/http/scanword/scanword-htt
 export class FieldComponent implements OnInit {
     
   
-    currentCell = 0;
+    id = Number(this.route.snapshot.paramMap.get('id'))
+    currentQuestionNumber = 0;
     n = 0;
     m = 0;
     prompt = 0
@@ -35,6 +36,10 @@ export class FieldComponent implements OnInit {
     ngOnInit(): void {
         this.getData()
     }
+
+    getScanwordQuestion(number: number): ScanwordQuestion {
+        return this.scanwordQuestions.find(q => q.number === number)!;
+    }
   
     getQuestion(number: number): Question {
         return this.scanwordQuestions.find(q => q.number === number)!.question;
@@ -44,15 +49,8 @@ export class FieldComponent implements OnInit {
         return questions.find(q => q.id == scanwordQuestion.question.id) != undefined
     }
 
-    isInput(cell:Cell) {
-        return cell.type == "input"
-    }
-    isCurrentInput(cell: Cell) {
-        return cell.type == "input" && cell.questionNumber.includes(this.currentCell)
-    }
-
-    isButton(cell:Cell) {
-        return cell.type == "button"
+    isSolved(question : Question) {
+        return this.blockedQuestions.find(q => q.id == question.id) != undefined
     }
 
     isDisabled(cell:Cell) {
@@ -61,26 +59,133 @@ export class FieldComponent implements OnInit {
 
     showQuestion(cell:Cell) {
         let number = parseInt(cell.text); 
-        this.currentCell = number
+        this.currentQuestionNumber = number
         this.currentQuestion = this.getQuestion(number)
     }
 
-    isText(question: Question) {
-        return question.type == "text"
+    checkPrompt() {
+        if (this.currentQuestionNumber == 0) {
+            return true
+        } 
+        return this.isSolved(this.getQuestion(this.currentQuestionNumber))
     }
 
-    isAudio(question: Question) {
-        return question.type == "audio"
+    printWordOnGrid(scanword_question: ScanwordQuestion, isDisable: boolean) {
+
+        let x = scanword_question.x
+        let y = scanword_question.y
+
+        if (scanword_question.direction) {
+            this.text[y * this.m + x++] = new Cell("button", scanword_question.number.toString(), [], true)
+            for (let symbol of scanword_question.question.answer) {
+                if (this.text[y * this.m + x].type == "input") {  
+                    if (this.text[y * this.m + x].text == "") {
+                        this.text[y * this.m + x].text = symbol
+                        this.text[y * this.m + x].isDisable = this.text[y * this.m + x].isDisable || isDisable 
+                    }                                  
+                    this.text[y * this.m + x].questionNumber.push(scanword_question.number)   
+                } else {
+                    this.text[y * this.m + x] = new Cell("input",symbol, [scanword_question.number], isDisable)
+                }
+                x++
+            }
+        } else {
+            this.text[y++ * this.m + x] = new Cell("button", scanword_question.number.toString(), [], true)
+            for (let symbol of scanword_question.question.answer) {
+                if (this.text[y * this.m + x].type == "input") {  
+                    if (this.text[y * this.m + x].text == "") {
+                        this.text[y * this.m + x].text = symbol
+                        this.text[y * this.m + x].isDisable = this.text[y * this.m + x].isDisable || isDisable 
+                    }                                  
+                    this.text[y * this.m + x].questionNumber.push(scanword_question.number)   
+                } else {
+                    this.text[y * this.m + x] = new Cell("input",symbol, [scanword_question.number], isDisable)
+                }
+                y++
+            }
+        }
     }
 
-    isImage(question: Question) {
-        return question.type == "image"
+    disableWordOnGrid(scanword_question: ScanwordQuestion) {
+        let x = scanword_question.x
+        let y = scanword_question.y
+        if (scanword_question.direction) {
+            x++
+            for (let symbol of scanword_question.question.answer) {
+                this.text[y * this.m + x++].isDisable = true
+            }
+        } else {
+            y++
+            for (let symbol of scanword_question.question.answer) {
+                this.text[y++ * this.m + x].isDisable = true
+            }
+        }
     }
 
+
+    onCheck() {
+        for (let question of this.scanwordQuestions) {
+            if (!this.isShow(this.blockedQuestions, question)) {
+                let res = true
+                let x = question.x
+                let y = question.y
+                if (question.direction) {
+                    x++
+                    for (let symbol of question.question.answer) {
+                        res = res && (symbol.toLowerCase() == this.text[y * this.m + x++].text.toLowerCase())
+                    }
+                } else {
+                    y++
+                    for (let symbol of question.question.answer) {
+                        res = res && (symbol.toLowerCase() == this.text[y++ * this.m + x].text.toLowerCase())
+                    } 
+                }
+                if (res) {  
+                    this.disableWordOnGrid(question) 
+                    if (!this.isShow(this.blockedQuestions, question)) {
+                        this.blockedQuestions.push(question.question)
+                    }              
+                }
+            }            
+        }
+    }
+
+    onSave(): void {
+        const id = Number(this.route.snapshot.paramMap.get('id'))
+        for (let question of this.scanwordQuestions) {
+            if (!this.isShow(this.blockedQuestions, question)) {
+                let res = true
+                let x = question.x
+                let y = question.y
+                if (question.direction) {
+                    x++
+                    for (let symbol of question.question.answer) {
+                        res = res && (symbol.toLowerCase() == this.text[y * this.m + x++].text.toLowerCase())
+                    }
+                } else {
+                    y++
+                    for (let symbol of question.question.answer) {
+                        res = res && (symbol.toLowerCase() == this.text[y++ * this.m + x].text.toLowerCase())
+                    } 
+                }
+                if (res) {      
+                    if (!this.isShow(this.blockedQuestions, question)) {
+                        this.solvableScanwordHttpService.saveQuestion(id, question.question).subscribe()
+                    }                    
+                }
+            }            
+        }
+    } 
+    
     getNewPrompt() {
         this.prompt--
         const id = Number(this.route.snapshot.paramMap.get('id'))
         this.solvableScanwordHttpService.decrease(id).subscribe()
+        let question = this.getScanwordQuestion(this.currentQuestionNumber)
+        this.printWordOnGrid(question, true) 
+        if (!this.isShow(this.blockedQuestions, question)) {
+            this.blockedQuestions.push(question.question)
+        }        
     }
 
     getData(): void {     
@@ -95,7 +200,7 @@ export class FieldComponent implements OnInit {
                 this.n = scan.width;
                 this.m = scan.height;
                 let max = this.n > this.m ?  this.n: this.m;
-                this.cellSize = 1000 / max // Общий размер тут пока 600
+                this.cellSize = 900 / max // Общий размер тут пока 900
                 let mas = []
                 for (var i = 0; i < this.n; i++) {     
                     for (var j = 0; j < this.m; j++) {  
@@ -162,36 +267,6 @@ export class FieldComponent implements OnInit {
                 }
                 this.text = mas
             })
-
-            // this.solvableScanwordHttpService.getAllResolvedByScanwordId(id).subscribe(res => {
-                
-            // }) 
         })       
     } 
-
-    onCheck(): void {
-        const id = Number(this.route.snapshot.paramMap.get('id'))
-        for (let question of this.scanwordQuestions) {
-            if (!this.isShow(this.blockedQuestions, question)) {
-                let res = true
-                let x = question.x
-                let y = question.y
-                if (question.direction) {
-                    x++
-                    for (let symbol of question.question.answer) {
-                        res = res && (symbol.toLowerCase() == this.text[y * this.m + x++].text.toLowerCase())
-                    }
-                } else {
-                    y++
-                    for (let symbol of question.question.answer) {
-                        res = res && (symbol.toLowerCase() == this.text[y++ * this.m + x].text.toLowerCase())
-                    } 
-                }
-                if (res) {      
-                    this.solvableScanwordHttpService.saveQuestion(id, question.question).subscribe()
-                }
-            }            
-        }
-        this.getData()
-    }    
 }

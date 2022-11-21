@@ -7,19 +7,19 @@
         
     }">
         <div class="cell" *ngFor="let symbol of text; index as i">
-            <input class = "current" type="text" maxlength="1" [(ngModel)]="text[i].text"  [disabled]= "text[i].isDisable"  *ngIf="isCurrentInput(text[i]); else elseBlock" [ngStyle]="{
+            <input class = "current" type="text" maxlength="1" [(ngModel)]="text[i].text"  [disabled]= "text[i].isDisable"  *ngIf="text[i].type == 'input'&& text[i].questionNumber.includes(currentQuestionNumber); else elseBlock" [ngStyle]="{
                 'width': (this.cellSize - 2) + 'px',
                 'height': (this.cellSize - 2) + 'px',
                 'font-size':(this.cellSize - 25) + 'px'
             }">
                 <ng-template #elseBlock>
-                    <input type="text" maxlength="1" [(ngModel)]="text[i].text"  [disabled]= "text[i].isDisable" *ngIf="isInput(text[i]); else elseBlock" [ngStyle]="{
+                    <input type="text" maxlength="1" [(ngModel)]="text[i].text"  [disabled]= "text[i].isDisable" *ngIf="text[i].type == 'input'; else elseBlock" [ngStyle]="{
                         'width': (this.cellSize - 2) + 'px',
                         'height': (this.cellSize - 2) + 'px',
                         'font-size':(this.cellSize - 25) + 'px'
                     }">
                     <ng-template #elseBlock>
-                        <button class="question-button"*ngIf="isButton(text[i])" (click) = "showQuestion(text[i])" [ngStyle]="{
+                        <button class="question-button"*ngIf="text[i].type == 'button'" (click) = "showQuestion(text[i])" [ngStyle]="{
                             'width': (this.cellSize - 2) + 'px',
                             'height': (this.cellSize - 2) + 'px',
                             'font-size':(this.cellSize - 25) + 'px'
@@ -29,9 +29,10 @@
         </div>
     </div>
     <div class="button-container">
-        <button class="hint-button" id="hint" (click)="getNewPrompt()">Взять подсказку  <br>Осталось : {{prompt}}</button>
-        <button class="hint-button"  (click)="onCheck()" >Проверить</button>
-        <button class="hint-button">Сохранить</button>
+
+        <button class="hint-button" id="hint" [disabled] ="checkPrompt()"(click)="getNewPrompt()" *ngIf="prompt > 0">Взять подсказку  <br>Осталось {{prompt}}</button>
+        <button class="hint-button"  (click)="onCheck()">Проверить</button>
+        <button class="hint-button" (click)="onSave()">Сохранить</button>
         <p>На данный момент решено {{blockedQuestions.length}}/{{scanwordQuestions.length}} вопросов</p>   
     </div>    
 </div>
@@ -40,15 +41,15 @@
 
 <div class="overlay" *ngIf="currentQuestion" (click) = "currentQuestion = undefined">
     <div class="popup">
-        <div *ngIf="isText(currentQuestion)"  class="center-div">
+        <div *ngIf="currentQuestion.type == 'text'"  class="center-div">
             <p >{{currentQuestion.question}}</p>
         </div>
-        <div *ngIf="isImage(currentQuestion)" class="center-div">
+        <div *ngIf="currentQuestion.type == 'image'" class="center-div">
             <img src={{currentQuestion.image}} >
             <p >{{currentQuestion.question}}</p>
         </div>
 
-        <div *ngIf="isAudio(currentQuestion)" class="center-div">
+        <div *ngIf="currentQuestion.type == 'audio'" class="center-div">
             <audio 
                 controls
                 src="{{currentQuestion.audio}}"> 

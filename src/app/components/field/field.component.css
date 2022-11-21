@@ -8,7 +8,7 @@
 } 
 
 .cell:empty {
-    background-color: rgb(77, 107, 228);;
+    background-color: rgb(77, 107, 228);
 }
 
 .cell input {
@@ -127,6 +127,6 @@
     color: rgb(0, 25, 126);
 }
 
-#hint {
-    margin-top: 250px;
+.hint-button:disabled {
+    color: #999999;
 }

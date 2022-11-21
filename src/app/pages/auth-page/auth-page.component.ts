@@ -13,7 +13,6 @@ export class AuthPageComponent implements OnInit {
 
     name = ""
     password = ""
-    type = true // true - login page | false - register page
 
     constructor(
         private authenticationHttpService: AuthenticationHttpService,

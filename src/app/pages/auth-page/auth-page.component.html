@@ -1,33 +1,13 @@
-<div class="login-block" *ngIf="type; else elseBlock">
-    <div class="line">
-        <button class="up-button-active">Войти</button>
-        <button class="up-button" (click)="type = false">Зарегестрироваться</button>
-    </div>
+<div class="login-block">
+    
     <div class="input-block">
         <p>Логин</p>
         <input type="text" [(ngModel)] = name>
         <p>Пароль</p>
-        <input type="text" [(ngModel)] = password>
-        <div>
-            <button class="ok-button" (click)="login()">Войти</button>
-        </div>        
+        <input  type="password"[(ngModel)] = password>    
+    </div>
+    <div class="line">
+        <button class="up-button" (click)="login()">Войти</button>
+        <button class="up-button" (click)="register()">Зарегестрироваться</button>
     </div>
 </div>
-
-<ng-template #elseBlock>
-    <div class="login-block">
-        <div class="line">
-            <button class="up-button" (click)="type = true">Войти</button>
-            <button class="up-button-active">Зарегестрироваться</button>
-        </div>
-        <div class="input-block">
-            <p>Логин</p>
-            <input type="text" [(ngModel)] = name>
-            <p>Пароль</p>
-            <input type="text" [(ngModel)] = password>
-            <div>
-                <button class="ok-button" (click)="register()">Зарегестрироваться</button>
-            </div>        
-        </div>
-    </div>    
-</ng-template>

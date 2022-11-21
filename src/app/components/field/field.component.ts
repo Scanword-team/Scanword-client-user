@@ -141,10 +141,7 @@ export class FieldComponent implements OnInit {
                     } 
                 }
                 if (res) {  
-                    this.disableWordOnGrid(question) 
-                    if (!this.isShow(this.blockedQuestions, question)) {
-                        this.blockedQuestions.push(question.question)
-                    }              
+                    this.disableWordOnGrid(question)              
                 }
             }            
         }
@@ -182,10 +179,7 @@ export class FieldComponent implements OnInit {
         const id = Number(this.route.snapshot.paramMap.get('id'))
         this.solvableScanwordHttpService.decrease(id).subscribe()
         let question = this.getScanwordQuestion(this.currentQuestionNumber)
-        this.printWordOnGrid(question, true) 
-        if (!this.isShow(this.blockedQuestions, question)) {
-            this.blockedQuestions.push(question.question)
-        }        
+        this.printWordOnGrid(question, true)   
     }
 
     getData(): void {     

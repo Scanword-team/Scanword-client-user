@@ -25,8 +25,8 @@ export class SolvableScanwordHttpService {
         return this.http.get<SolvableScanword>(this.baseURL + "/getByScanwordId/" + Id, {headers :new HttpHeaders().append('Authorization', this.tokenService.getToken() || "")})
     }
 
-    public saveQuestion(scanwordId: number, question: Question) {
-        return this.http.post(this.baseURL + "/addResolvedQuestion/" + scanwordId, question, {headers :new HttpHeaders().append('Authorization', this.tokenService.getToken() || "")})
+    public saveQuestion(scanwordId: number, questions: Array<Question>) {
+        return this.http.post(this.baseURL + "/updateResoledQuestionList/" + scanwordId, questions, {headers :new HttpHeaders().append('Authorization', this.tokenService.getToken() || "")})
     }
 
     public decrease(scanwordId: number) {

@@ -141,14 +141,15 @@ export class FieldComponent implements OnInit {
                     } 
                 }
                 if (res) {  
-                    this.disableWordOnGrid(question)              
+                    this.disableWordOnGrid(question)     
+                    this.blockedQuestions.push(question.question)           
                 }
             }            
         }
     }
 
     onSave(): void {
-        const id = Number(this.route.snapshot.paramMap.get('id'))
+        const id = Number(this.route.snapshot.paramMap.get('id'))        
         for (let question of this.scanwordQuestions) {
             if (!this.isShow(this.blockedQuestions, question)) {
                 let res = true
@@ -165,13 +166,12 @@ export class FieldComponent implements OnInit {
                         res = res && (symbol.toLowerCase() == this.text[y++ * this.m + x].text.toLowerCase())
                     } 
                 }
-                if (res) {      
-                    if (!this.isShow(this.blockedQuestions, question)) {
-                        this.solvableScanwordHttpService.saveQuestion(id, question.question).subscribe()
-                    }                    
+                if (res) { 
+                    this.blockedQuestions.push(question.question)                   
                 }
             }            
         }
+        this.solvableScanwordHttpService.saveQuestion(id, this.blockedQuestions).subscribe()
     } 
     
     getNewPrompt() {

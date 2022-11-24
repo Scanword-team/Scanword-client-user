@@ -25,6 +25,7 @@ export class FieldComponent implements OnInit {
     scanwordQuestions: ScanwordQuestion[] = [];  
     blockedQuestions: Question[] = [];    
     text:Array<Cell> = Array();
+    solved = false
     
     constructor(
         private route: ActivatedRoute,
@@ -142,10 +143,12 @@ export class FieldComponent implements OnInit {
                 }
                 if (res) {  
                     this.disableWordOnGrid(question)     
-                    this.blockedQuestions.push(question.question)           
+                    this.blockedQuestions.push(question.question)                     
                 }
             }            
         }
+        this.solved = this.blockedQuestions.length == this.scanwordQuestions.length  
+        console.log(this.solved)    
     }
 
     onSave(): void {

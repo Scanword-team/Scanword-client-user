@@ -8,3 +8,14 @@
 body {
     background: linear-gradient(90deg, #0462ac,#4993c1,#a2e6fb);
 }
+
+*::-webkit-scrollbar {
+    width: 12px;
+    background-color: #a2e6fb;
+    border: 1px solid #4993c1;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: #4993c1;
+    /* background-color: rgb(177 124 203 / 19%); */
+  }

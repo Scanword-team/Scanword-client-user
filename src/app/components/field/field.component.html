@@ -3,7 +3,9 @@
         'grid-template-columns': 'repeat(' + this.m + ','+ this.cellSize +'px)',
         'grid-auto-rows' : this.cellSize + 'px',
         'width' : (this.cellSize*m) +'px',
-        'height' : (this.cellSize*n) +'px'
+        'height' : (this.cellSize*n) +'px',
+        'background-color' : solved ? 'rgba(0, 255, 0, 0.4)' : 'none'
+        
         
     }">
         <div class="cell" *ngFor="let symbol of text; index as i">
@@ -33,7 +35,9 @@
         <button class="hint-button" id="hint" [disabled] ="checkPrompt()"(click)="getNewPrompt()" *ngIf="prompt > 0">Взять подсказку  <br>Осталось {{prompt}}</button>
         <button class="hint-button"  (click)="onCheck()">Проверить</button>
         <button class="hint-button" (click)="onSave()">Сохранить</button>
-        <p>На данный момент решено {{blockedQuestions.length}}/{{scanwordQuestions.length}} вопросов</p>   
+        <p [ngStyle]="{
+            'color' : solved ? 'rgb(0, 122, 0)' : 'none'
+        }">На данный момент решено {{blockedQuestions.length}}/{{scanwordQuestions.length}} вопросов</p>   
     </div>    
 </div>
 

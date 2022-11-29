@@ -25,7 +25,6 @@ export class AuthPageComponent implements OnInit {
 
     register(): void {
         this.authenticationHttpService.register(this.name, this.password).subscribe()
-        alert("Успешно зареган")
     }
 
     login(): void {

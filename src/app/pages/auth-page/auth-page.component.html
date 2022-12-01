@@ -4,7 +4,8 @@
         <p>Логин</p>
         <input type="text" [(ngModel)] = name>
         <p>Пароль</p>
-        <input  type="password"[(ngModel)] = password>    
+        <input  type="password"[(ngModel)] = password>
+        <p style="color: red;">{{error}}</p>   
     </div>
     <div class="line">
         <button class="up-button" (click)="login()">Войти</button>

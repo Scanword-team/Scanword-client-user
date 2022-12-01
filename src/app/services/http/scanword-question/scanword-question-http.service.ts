@@ -21,9 +21,4 @@ export class ScanwordQuestionHttpService {
   getAllByScanwordId(Id : number): Observable<ScanwordQuestion[]> {
     return this.http.get<ScanwordQuestion[]>(this.baseURL + "/getAllByScanwordId/" + Id, {headers :new HttpHeaders().append('Authorization', this.tokenService.getToken() || "")} )
   }
-
-  getAllResolvedByScanwordId(Id: number): Observable<Question[]> {
-    return this.http.get<Question[]>(this.baseURL + "/getAllByScanwordId/" + Id, {headers :new HttpHeaders().append('Authorization', this.tokenService.getToken() || "")})
-    
-  }
 }

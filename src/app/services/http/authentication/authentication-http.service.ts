@@ -14,8 +14,8 @@ export class AuthenticationHttpService {
         private http: HttpClient,
     ) { }
 
-    public register(username: string, password: string) {
-        return this.http.post(this.baseURL + "/register", 
+    register(username: string, password: string) :Observable<RegisterUser>{
+        return this.http.post<RegisterUser>(this.baseURL + "/register", 
         {
             username: username,
             password: password
@@ -37,9 +37,8 @@ export class AuthenticationHttpService {
 
     private handleError<T> (result?: T) {
         return (error: any): Observable<T> => {
-            alert(error.error.message)
-            
-            return of(result as T);        
+            console.log(error.error.message)
+            return of (error.error.message as T)      
         }        
     }
 }

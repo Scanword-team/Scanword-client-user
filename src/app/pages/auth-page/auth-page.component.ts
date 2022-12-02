@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationHttpService } from 'src/app/services/http/authentication/authentication-http.service';
-// import { TokenService } from 'src/app/services/token/token.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { RegisterUser } from 'src/app/models/register_user';

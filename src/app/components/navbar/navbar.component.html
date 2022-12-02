@@ -1,8 +1,8 @@
 <div class="placeholder"></div>
 <nav>
     <ul>   
-        <li><a routerLink="/help">Справка</a></li>
-        <li><a routerLink="/auth">Авторизация</a></li>
+        <li><a routerLink="/auth" (click)="onClickLogout()">Выйти</a></li>
+        <li><a routerLink="/help">Справка</a></li>        
         <li><a routerLink="/scanwords">Главная</a></li>        
     </ul>
 </nav>

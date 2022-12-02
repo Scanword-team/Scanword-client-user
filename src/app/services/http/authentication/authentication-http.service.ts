@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
 import { RegisterUser } from 'src/app/models/register_user';
+import { AuthService } from '../../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class AuthenticationHttpService {
 
     constructor(
         private http: HttpClient,
+        private authService:AuthService
     ) { }
 
     register(username: string, password: string) :Observable<RegisterUser>{
@@ -36,6 +38,13 @@ export class AuthenticationHttpService {
 
     loginGuest() : Observable<RegisterUser> {
         return this.http.post<RegisterUser>(this.baseURL + "/loginGuest",{}).pipe(
+            catchError(this.handleError<RegisterUser>())
+        )
+    }
+
+    logout() :Observable<RegisterUser>{
+        this.authService.logout()
+        return this.http.post<RegisterUser>(this.baseURL + "/logout",{}, {headers :new HttpHeaders().append('Authorization', this.authService.getToken() || "")}).pipe(
             catchError(this.handleError<RegisterUser>())
         )
     }

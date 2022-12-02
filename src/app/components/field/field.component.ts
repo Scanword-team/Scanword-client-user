@@ -6,6 +6,7 @@ import { ScanwordQuestion } from 'src/app/models/scanword_question';
 import { ScanwordQuestionHttpService } from 'src/app/services/http/scanword-question/scanword-question-http.service';
 import { SolvableScanwordHttpService } from 'src/app/services/http/solvable-scanword/solvable-scanword-http.service';
 import { ScanwordHttpService } from 'src/app/services/http/scanword/scanword-http.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-field',
@@ -16,6 +17,7 @@ export class FieldComponent implements OnInit {
     
   
     id = Number(this.route.snapshot.paramMap.get('id'))
+    role = this.authService.getRole()
     currentQuestionNumber = 0;
     n = 0;
     m = 0;
@@ -31,7 +33,7 @@ export class FieldComponent implements OnInit {
         private route: ActivatedRoute,
         private scanwordQuestionHttpService: ScanwordQuestionHttpService,
         private solvableScanwordHttpService: SolvableScanwordHttpService,
-        private scanwordHttpService: ScanwordHttpService,
+        private authService: AuthService,
     ) { }
 
     ngOnInit(): void {

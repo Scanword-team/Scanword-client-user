@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ScanwordQuestion } from 'src/app/models/scanword_question';
 import { Question } from 'src/app/models/question';
-import { TokenService } from '../../token/token.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,10 @@ export class ScanwordQuestionHttpService {
 
   constructor(
     private http: HttpClient,
-    private tokenService:TokenService
+    private authService:AuthService
 ) { }
 
   getAllByScanwordId(Id : number): Observable<ScanwordQuestion[]> {
-    return this.http.get<ScanwordQuestion[]>(this.baseURL + "/getAllByScanwordId/" + Id, {headers :new HttpHeaders().append('Authorization', this.tokenService.getToken() || "")} )
+    return this.http.get<ScanwordQuestion[]>(this.baseURL + "/getAllByScanwordId/" + Id, {headers :new HttpHeaders().append('Authorization', this.authService.getToken() || "")} )
   }
 }

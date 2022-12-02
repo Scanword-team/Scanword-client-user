@@ -34,7 +34,7 @@
 
         <button class="hint-button" id="hint" [disabled] ="checkPrompt()"(click)="getNewPrompt()" *ngIf="prompt > 0">Взять подсказку  <br>Осталось {{prompt}}</button>
         <button class="hint-button"  (click)="onCheck()">Проверить</button>
-        <button class="hint-button" (click)="onSave()">Сохранить</button>
+        <button class="hint-button" (click)="onSave()" *ngIf="role =='USER'">Сохранить</button>
         <p [ngStyle]="{
             'color' : solved ? 'rgb(0, 122, 0)' : 'none'
         }">На данный момент решено {{blockedQuestions.length}}/{{scanwordQuestions.length}} вопросов</p>   

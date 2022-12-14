@@ -2,5 +2,22 @@ p {
     text-align: center;
     color: #ffffff;
     font-size: 20px;
-    margin-top: 150px;
+    margin-top: 50px;
 }
+button {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 25px;
+    color: #ffffff;
+    font-size: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(0, 25, 126, 0.2);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+    margin: 5px;
+}
+
+button:hover {
+    background-color: rgba(0, 25, 126, 0.4);
+} 

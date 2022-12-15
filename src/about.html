@@ -80,11 +80,35 @@ img {
 .flexing img {
     max-width: 40%;
 }
+
+.up-button {
+    position: fixed;
+    right: 10px;
+    font-size: 16pt;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    background-color: rgba(172, 255, 47, 0.242);
+    color: rgba(0, 0, 0, 0.482);
+    border: 2px solid rgba(0, 0, 0, 0.449);
+}
+
+.up-button:hover {
+    cursor: pointer;
+    background-color: rgb(172, 255, 47);
+    color: rgb(0, 0, 0);
+    border: 2px solid black;
+}
     </style>
-    <title>Сведения о системе</title>
+    <title>Сведения о системe</title>
+    <script>
+        const goUp = () => {
+            window.scrollTo(0,0);
+        }
+    </script>
 </head>
 <body>
     <div class="container">
+        <button class="up-button" onclick="goUp()">&uArr;</button>
         <ul>
             <li><a href="#ascsot">Автоматизировання система составления сканворда на заданную тему</a></li>
             <li>
@@ -131,7 +155,7 @@ img {
         <p>
             Программа использует базу данных PostgreSQL 14.5. Программная система совместима с Windows 7 и выше.
             Для пользования программой необходимо предустановить браузер - Google Chrome 86.0.4240.183 (64-битный)  и выше
-            или Firefox 83.0 (64-битный) и выше.
+            или Firefox 83.0 (64-битный) и вышe.
         </p>
 
         <h3 id="auth">Авторизация, запуск программы</h3>

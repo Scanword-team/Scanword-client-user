@@ -27,7 +27,10 @@ export class AuthPageComponent implements OnInit {
 
     register(): void {
         this.authenticationHttpService.register(this.name, this.password).subscribe(res => {
-            this.error = res
+            this.error = undefined
+            if (!res.username) {
+                this.error = res
+            }
         })
     }
 
@@ -47,7 +50,6 @@ export class AuthPageComponent implements OnInit {
         this.authenticationHttpService.loginGuest().subscribe(res => {
             this.error = undefined
             if (res.token) {
-                console.log(res)
                 this.authService.login(res.role, res.token)
                 this.router.navigate(['/scanwords'])
             } else {

@@ -52,7 +52,7 @@ export class AuthenticationHttpService {
 
     private handleError<T> (result?: T) {
         return (error: any): Observable<T> => {
-            console.log(error.error.message)
+            // console.log(error.error.message)
             return of (error.error.message as T)      
         }        
     }

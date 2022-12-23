@@ -18,7 +18,7 @@ export class ScanwordHttpService {
     ) { }
 
     getAllScanword(): Observable<Scanword[]> {
-        return this.http.get<Scanword[]>(this.baseURL, {headers :new HttpHeaders().append('Authorization', this.authService.getToken() || "")} )
+        return this.http.get<Scanword[]>(this.baseURL+ "/getAllWithQuestions", {headers :new HttpHeaders().append('Authorization', this.authService.getToken() || "")} )
     }
 
     getStatsById(Id: number): Observable<Stats> {

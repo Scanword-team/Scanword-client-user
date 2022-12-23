@@ -194,10 +194,11 @@ export class FieldComponent implements OnInit {
 
             this.solvableScanwordHttpService.getByScanwordId(id).subscribe(res => {
                 this.blockedQuestions = res.solvedQuestions   
-                this.prompt = res.prompt          
+                this.prompt = res.prompt     
+                console.log(this.scanwordQuestions)
                 let scan = this.scanwordQuestions[0].scanword
-                this.n = scan.width;
-                this.m = scan.height;
+                this.n = scan.height;
+                this.m = scan.width;
                 let max = this.n > this.m ?  this.n: this.m;
                 this.cellSize = 900 / max // Общий размер тут пока 900
                 let mas = []

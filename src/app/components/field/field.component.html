@@ -49,14 +49,14 @@
             <p >{{currentQuestion.question}}</p>
         </div>
         <div *ngIf="currentQuestion.type == 'image'" class="center-div">
-            <img src={{currentQuestion.image}} >
+            <img src={{currentQuestion.image.image}} >
             <p >{{currentQuestion.question}}</p>
         </div>
 
         <div *ngIf="currentQuestion.type == 'audio'" class="center-div">
             <audio 
                 controls
-                src="{{currentQuestion.audio}}"> 
+                src="{{currentQuestion.audio.audio}}"> 
                     Your browser does not support the
                     <code>audio</code> element.                  
             </audio>

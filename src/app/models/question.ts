@@ -3,6 +3,10 @@ export interface Question {
     answer: string;
     question: string;
     type: string;
-    audio: string;
-    image: string;
+    audio: {
+        audio: string;
+    };
+    image: {
+        image: string;
+    }
 }

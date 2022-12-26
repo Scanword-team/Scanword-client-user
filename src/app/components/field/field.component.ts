@@ -81,11 +81,9 @@ export class FieldComponent implements OnInit {
         if (scanword_question.direction) {
             this.text[y * this.m + x++] = new Cell("button", scanword_question.number.toString(), [], true)
             for (let symbol of scanword_question.question.answer) {
-                if (this.text[y * this.m + x].type == "input") {  
-                    if (this.text[y * this.m + x].text == "") {
-                        this.text[y * this.m + x].text = symbol
-                        this.text[y * this.m + x].isDisable = this.text[y * this.m + x].isDisable || isDisable 
-                    }                                  
+                if (this.text[y * this.m + x].type == "input") {                      
+                    this.text[y * this.m + x].text = symbol
+                    this.text[y * this.m + x].isDisable = this.text[y * this.m + x].isDisable || isDisable                                                       
                     this.text[y * this.m + x].questionNumber.push(scanword_question.number)   
                 } else {
                     this.text[y * this.m + x] = new Cell("input",symbol, [scanword_question.number], isDisable)
@@ -95,11 +93,9 @@ export class FieldComponent implements OnInit {
         } else {
             this.text[y++ * this.m + x] = new Cell("button", scanword_question.number.toString(), [], true)
             for (let symbol of scanword_question.question.answer) {
-                if (this.text[y * this.m + x].type == "input") {  
-                    if (this.text[y * this.m + x].text == "") {
-                        this.text[y * this.m + x].text = symbol
-                        this.text[y * this.m + x].isDisable = this.text[y * this.m + x].isDisable || isDisable 
-                    }                                  
+                if (this.text[y * this.m + x].type == "input") {                      
+                    this.text[y * this.m + x].text = symbol
+                    this.text[y * this.m + x].isDisable = this.text[y * this.m + x].isDisable || isDisable                                                      
                     this.text[y * this.m + x].questionNumber.push(scanword_question.number)   
                 } else {
                     this.text[y * this.m + x] = new Cell("input",symbol, [scanword_question.number], isDisable)
